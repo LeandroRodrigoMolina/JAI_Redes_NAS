@@ -1,0 +1,87 @@
+\documentclass[a4paper,10pt]{article}
+
+% Paquetes requeridos
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{csquotes}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage[style=apa, backend=biber, natbib=true, language=spanish, url=true]{biblatex}
+\usepackage{tocloft} % Para personalizar el índice
+\usepackage[left=3.5cm,right=2.5cm,top=3.5cm,bottom=3.8cm]{geometry}
+\usepackage{setspace} % Espaciado
+\usepackage{titlesec} % Para personalizar los títulos
+\usepackage{fancyhdr} % Para personalizar encabezados y pies de página
+\usepackage{newtxtext}
+\usepackage{ragged2e}
+\usepackage{caption}
+\usepackage{footnote}
+
+\makesavenoteenv{figure}
+% Configuración para las etiquetas de figura
+\captionsetup[figure]{labelformat=empty} % Esto elimina el número de figura y el separador
+
+\pagestyle{fancy}
+\fancyhf{} % Limpia encabezados y pies de página
+\renewcommand{\headrulewidth}{0pt} % Elimina la línea del encabezado
+
+\addbibresource{referencias.bib}
+\DeclareLanguageMapping{spanish}{spanish-apa}
+% Configuraciones
+\setlength{\parskip}{6pt} % Espacio entre párrafos
+\setstretch{1.15} % Espacio entre líneas
+
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % Para puntos en el índice
+
+% Estilos para títulos y subtítulos
+\titleformat{\section}
+{\normalfont\fontsize{12}{15}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+{\normalfont\fontsize{10}{13}\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+{\normalfont\fontsize{10.5}{13}\bfseries}{\thesubsubsection}{1em}{}
+
+\usepackage[hypertexnames=false, colorlinks=true, 
+linkcolor=blue, 
+citecolor=blue, 
+urlcolor=blue, 
+linkbordercolor={1 1 0}, 
+citebordercolor={1 1 0}, 
+urlbordercolor={1 1 0}, 
+filecolor=blue, 
+pdfborderstyle={/S/U/W 1}]{hyperref}
+
+% Inicio del documento
+\begin{document}
+	% Carátula
+	\centering
+	{\fontsize{14}{17}\bfseries Estudio Comparativo de Plataformas NAS Autogestionadas.\par}
+	{\small Borgo, Martín Alejandro; Molina, Leandro Rodrigo;\par}
+	{\normalsize Universidad Nacional de Entre Ríos\par}
+	{\normalsize Facultad de Ciencias de la Administración\par}
+	{\normalsize Licenciatura en Sistemas\par}
+	{\small
+		\href{mailto:martinborgo8@gmail.com}{martinborgo8@gmail.com},
+		\href{mailto:LeandroRodrigoMolina@gmail.com}{LeandroRodrigoMolina@gmail.com}
+		\par}	
+	% Resumen y palabras clave
+	{\begin{quote} \small \justify\textbf{Abstract.} Aca abstract \end{quote} \par}
+	{\begin{quote} \small \justify\textbf{Keywords:} Aca palabras clave \end{quote} \par}
+	
+	\justifying
+	
+	\section{Introducción}
+	Introduccion
+	\section{Desarrollo de Trabajo}
+	Inicio desarrolo del trabajo
+	
+	\section{Resultados Obtenidos}
+	Inicio resultados obtenidos
+	
+	\section{Conclusiones}
+	Inicio conclusiones.
+	
+	\nocite{*}
+	\section{Referencias}
+	\printbibliography[heading=none]
+\end{document}
