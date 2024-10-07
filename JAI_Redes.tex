@@ -6,6 +6,7 @@
 \usepackage{csquotes}
 \usepackage{amsmath, amssymb, amsfonts}
 \usepackage{graphicx}
+\usepackage{tikz}
 \usepackage[style=apa, backend=biber, natbib=true, language=spanish, url=true]{biblatex}
 \usepackage{tocloft} % Para personalizar el índice
 \usepackage[left=3.5cm,right=2.5cm,top=3.5cm,bottom=3.8cm]{geometry}
@@ -16,6 +17,11 @@
 \usepackage{ragged2e}
 \usepackage{caption}
 \usepackage{footnote}
+\usepackage{verbatim} % Para incluir código
+\usepackage{tabularx} % Para tablas ajustables
+\usepackage{float} % Para controlar la posición de las tablas
+\usepackage{booktabs} % Para mejorar las tablas
+\usepackage{array} % Para mejorar las tablas
 
 \makesavenoteenv{figure}
 % Configuración para las etiquetas de figura
@@ -28,7 +34,7 @@
 \addbibresource{referencias.bib}
 \DeclareLanguageMapping{spanish}{spanish-apa}
 % Configuraciones
-\setlength{\parskip}{6pt} % Espacio entre párrafos
+\setlength{\parskip}{10pt} % Espacio entre párrafos aumentado
 \setstretch{1.15} % Espacio entre líneas
 
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % Para puntos en el índice
@@ -56,32 +62,241 @@ pdfborderstyle={/S/U/W 1}]{hyperref}
 	% Carátula
 	\centering
 	{\fontsize{14}{17}\bfseries Estudio Comparativo de Plataformas NAS Autogestionadas.\par}
-	{\small Borgo, Martín Alejandro; Molina, Leandro Rodrigo;\par}
+	{\small Borgo, Martín Alejandro; Molina, Leandro Rodrigo; Laner Sandoval, Anacleto José Federico.\par}
 	{\normalsize Universidad Nacional de Entre Ríos\par}
 	{\normalsize Facultad de Ciencias de la Administración\par}
 	{\normalsize Licenciatura en Sistemas\par}
 	{\small
 		\href{mailto:martinborgo8@gmail.com}{martinborgo8@gmail.com},
 		\href{mailto:LeandroRodrigoMolina@gmail.com}{LeandroRodrigoMolina@gmail.com}
+		\href{mailto:josecitolansan@yahoo.com.ar}{josecitolansan@yahoo.com.ar}
 		\par}	
 	% Resumen y palabras clave
-	{\begin{quote} \small \justify\textbf{Abstract.} Aca abstract \end{quote} \par}
-	{\begin{quote} \small \justify\textbf{Keywords:} Aca palabras clave \end{quote} \par}
+	{\begin{quote} \small \justify\textbf{Abstract.} El acceso a almacenamiento remoto se ha vuelto algo común en estos días, impulsado en parte por el auge y rápido crecimiento de los servicios en la nube, los cuales facilitan y abaratan en el despliegue y posterior crecimiento de las aplicaciones. La aparición de los sistemas NAS (Network-attached Storage) que permiten centralizar, gestionar y acceder al almacenamiento de forma remota ayudó en gran parte al desarrollo, aparición y posterior crecimiento de este tipo de servicios. Este concepto ha evolucionado dando lugar a los SAN (Storage Area Network), redes construidas específicamente para el acceso rápido y eficaz a los medios de almacenamiento. En este trabajo se analizarán tres opciones de NAS de acuerdo con la facilidad de instalación y configuración, su rendimiento y las funcionalidades que estos ofrecen. \end{quote} \par}
+	{\begin{quote} \small \justify\textbf{Keywords:} NAS (Network-attached Storage), SAN (Storage Area Network), FileBrowser, NextCloud, WebDAV.\end{quote} \par}
 	
 	\justifying
 	
 	\section{Introducción}
-	Introduccion
-	\section{Desarrollo de Trabajo}
-	Inicio desarrolo del trabajo
+	Este trabajo se llevó a cabo en el marco de la cátedra de Comunicaciones y Redes, con el objetivo principal de aplicar los conocimientos aprendidos durante el dictado de la asignatura, de modo tal que los estudiantes puedan establecer una conexión entre los contenidos teóricos de la asignatura y la práctica.
+	
+	La incorporación de tecnologías IT en el ambiente empresarial introdujo diversos desafíos. Uno de estos desafíos fue la referida al almacenamiento, entre los 80’ y 90’ la capacidad de almacenamiento de los dispositivos era reducida en comparación a las necesidades empresariales, sumado al hecho de que el precio de este tipo de hardware era relativamente elevado en esos momentos, por lo que realizar inversiones en almacenamiento resultaba una tarea crítica a la hora de la toma de decisiones.
+	
+	La utilización de distintos sistemas en red permitió posteriormente la separación de los servidores de aplicación y los diferentes clientes del almacenamiento, logrando relocalizar esta infraestructura en sitios más adecuados para su mantención y posterior ampliación, reduciendo el tiempo empleado en tareas de mantenimiento y expansión de las capacidades de almacenamiento. Esto se tradujo en una mejora significativa del uso del almacenamiento, permitiendo reducir el desperdicio de espacio y centralizando la información mejorando así la disponibilidad y el acceso a la misma, sin contar que mejoraba en gran medida las tareas de backup y restablecimiento de la información. La principal desventaja de este tipo de arquitectura es que se utilizan protocolos de red para el acceso a los datos, lo cual es mucho más costoso que el acceso directo de forma local \citep{Gibson_Van_Meter_2000}.
+	
+	La mayoría de los sistemas de almacenamiento en red pueden ser encasilladas dentro de alguna de estas dos arquitecturas: sistemas NAS o sistemas SAN. Si bien ambos esquemas brindan el mismo conjunto de funcionalidades y a ojos del administrador de red estos pueden usarse y tratarse de la misma manera, ambas arquitecturas son diferentes, dicha diferencia se encuentra en las interfases brindadas por cada esquema. Los sistemas SAN proporcionan una interfaz simple que permite acceder solo a datos de tamaño fijo, los bloques, dado que este tipo de arquitectura fue pensada y diseñada para manejar y manipular medios magnéticos. Mientras que los sistemas NAS brindan una interfaz mucho más rica en funcionalidades que permite acceder a estructuras de tamaño variable como los archivos, además de permitir crear y manipular directorios, este tipo de sistemas interactúan con los dispositivos físicos adyacentes a través de una interfaz similar a la de los sistemas SAN ya que de esta manera se asegura cierta fiabilidad en la recuperación y persistencia de los datos.
+	
+	La seguridad para los sistemas de almacenamientos en la red fue aumentando a lo largo de los años en principio por el aumento en el uso de estos mismos debido a su conveniencia y practicidad a la hora de hacer respaldar y recuperar datos. En sus inicios ningún sistema NAS ofrecía servicios de seguridad, ya que su principal función era solo almacenar archivos, si bien gran parte de las cuestiones de seguridad podían ser resuelta a través de la implementación de estos sistemas utilizando protocolos seguros \citep{gibson1996case}, o técnicas de encriptación y autenticación \citep{miller2002strong}. No obstante, el sistema sigue siendo vulnerable ante ataques más sofisticados, es por lo que los sistemas más modernos integran el soporte para la configuración de cortafuegos (firewalls) y redes privadas virtuales (VPNs), facilitando así las tareas de administración, gestión y autenticación de usuarios \citep{Edelson_2004}.
+	
+	Diversas compañías centran sus esfuerzos en el desarrollo de sistemas NAS diseñados para cubrir las diferentes necesidades particulares del mercado y de los consumidores finales. El objetivo de este trabajo es comparar tres sistemas NAS como lo son Nextcloud, Filebrowser y WebDAV, explorar sus características, prestaciones, funcionalidades y sus ventajas y desventajas con la finalidad de realizar un análisis que ayude a la selección de una solución sobre otra.
+	
+	\section{Desarrollo del Trabajo}
+	Para este trabajo evaluar NextCloud y FileBrowser en primera instancia porque ambos son proyectos de código abierto que ofrecen una solución robusta en términos de gestión de archivos y datos a través de la red. Ambas alternativas permiten el despliegue para uso personal, brindando una mayor libertad al momento de la configuración y puesta en funcionamiento.
+	
+	La comparativa se realizará en un entorno controlado, más específicamente en una red hogareña. Por otro lado, para asegurar la consistencia en las pruebas, ambos servicios serán hosteados en la misma máquina de forma simultánea. Esta máquina cuenta con las siguientes especificaciones técnicas:
+	
+	Procesador: Intel Celeron G530 2.4 GHz.
+	
+	Memoria RAM: 2GB Ram DDR3.
+	
+	Almacenamiento: 300 GB disco duro.
+	
+	Sistema operativo: Arch Linux 64bits.
+	
+	En las siguientes secciones se desarrollarán las distintas comparaciones entre estos tres servicios. Estas comparativas se centran en el despliegue y configuración, las funcionalidades ofrecidas y el rendimiento.
+	
+	\subsection{Despliegue y Configuración}
+	Para realizar esta prueba, se desplegó y configuró todo utilizando Docker y Docker Compose, para aquellos casos en los que la instalación básica requiera la configuración de bases de datos adicionales o algún otro tipo de servicio adicional.
+	
+	Para la instalación de NextCloud es necesario utilizar Docker Compose debido a que este servicio utiliza una base de datos MariaDB o MySQL para almacenar datos y una base de datos no relacional como Redis. La estructura básica del archivo docker-compose.yml es la siguiente:
+	
+	\begin{verbatim}
+		version: '3'
+		
+		services:
+		nextcloud:
+		image: nextcloud
+		container_name: nextcloud
+		restart: unless-stopped
+		ports:
+		- 8080:80
+		volumes:
+		- ./nextcloud:/var/www/html
+		environment:
+		- MYSQL_HOST=db
+		- MYSQL_DATABASE=nextcloud
+		- MYSQL_USER=nextcloud
+		- MYSQL_PASSWORD=tu_password_mysql
+		depends_on:
+		- db
+		
+		db:
+		image: mariadb
+		container_name: nextcloud-db
+		restart: unless-stopped
+		environment:
+		- MYSQL_ROOT_PASSWORD=tu_password_root
+		- MYSQL_DATABASE=nextcloud
+		- MYSQL_USER=nextcloud
+		- MYSQL_PASSWORD=tu_password_mysql
+		volumes:
+		- ./db:/var/lib/mysql
+		
+		redis:
+		image: redis:alpine
+		container_name: redis
+		restart: unless-stopped
+		command: redis-server --requirepass tu_password_redis
+		volumes:
+		- ./redis:/data
+		
+		volumes:
+		nextcloud:
+		db:
+		redis:
+	\end{verbatim}
+	
+	Es necesario configurar en este archivo el usuario y contraseña tanto de NextCloud como de MariaDB. Esta es la configuración mínima para el funcionamiento correcto de NextCloud.
+	
+	La instalación de FileBrowser es más sencilla, puesto que todos los archivos e información adicional necesaria para la correcta gestión de los datos es manejada completamente por FileBrowser. El primer paso para la instalación es crear un directorio en el cual se almacenarán los datos gestionados por este servicio, el segundo paso consiste en ejecutar el siguiente comando de Docker.
+	
+	\begin{verbatim}
+		docker run -d \
+		--name filebrowser \
+		--restart always \
+		-p 8081:80 \
+		-v filebrowser/data:/srv \
+		filebrowser/filebrowser
+	\end{verbatim}
+	
+	Este comando levantará de forma automática un contenedor con la configuración por defecto del sistema, se puede acceder a la interfaz a través de navegador accediendo al puerto correspondiente (en este caso 8081) e iniciar sesión con el usuario predeterminado asignado por FileBrowser, el cual es admin.
+	
+	Para la instalación y despliegue de WebDAV también se utilizó con Docker Compose\footnote{Instalación realizada según los pasos descritos en el siguiente \href{https://github.com/jmlcas/webdav/}{repositorio de Github}.} utilizando una imagen especial que facilita la instalación y configuración de WebDAV. 
+	
+	\begin{verbatim}
+		version: "3.3"
+		
+		services:
+		
+		webdav:
+		image: ugeek/webdav:amd64    
+		container_name: webdav
+		restart: unless-stopped
+		volumes:
+		- ./share:/media
+		ports:
+		- "8082:80"
+		env_file: .env 	 
+		environment:
+		- TZ=America/Argentina/Buenos_Aires
+		- PUID=1000
+		- PGID=1000
+	\end{verbatim}
+	
+	Para hacer funcionar WebDAV correctamente se tiene que configurar un servidor web, en este caso Nginx. Para la carga e interacción con este servicio se utilizó Cyberduck, un cliente de transferencia de archivos compatible con FTP, SFTP y en nuestro caso HTTP que es lo que utiliza WebDAV.
+	
+	\subsection{Funcionalidades}
+	NextCloud permite la creación de usuarios con cuotas de almacenamiento personalizadas, así como la formación de distintos grupos de usuarios con diferentes cuotas de almacenamiento compartido de acuerdo con las necesidades del grupo o usuario. Además, concede la opción de asignar una cuota global para todos los usuarios en caso de que la gestión del almacenamiento no sea una prioridad. Otra de las funcionalidades más importantes de esta plataforma es la posibilidad de poder integrar almacenamiento de fuentes externas como Google Drive o Microsoft OneDrive, esto resulta muy útil en caso de que se requiera escalar las características del servidor de una forma barata y más sencilla.
+	
+	Más allá de los mecanismos de gestión y asignación de recursos, NextCloud es reconocido por su extensibilidad y versatilidad. La plataforma permite agregar funcionalidades adicionales como calendarios, gestión de correos electrónicos, gestión y asignación de tareas e incluso edición colaborativa de documentos en la nube \footnote{Las funcionalidades de Nextcloud pueden ser leídas con más claridad en su pagina oficial, \href{https://nextcloud.com/es/athome/}{Self-hosted cloud collaboration platform for home users - Nextcloud}}.
+	
+	Por otro lado, Filebrowser permite la creación de usuarios y grupos con cuotas de almacenamiento personalizadas, además de poder establecer políticas de acceso comunes o mucho más restrictivas a los demás usuarios y grupos.
+	
+	Esta plataforma cuenta con muchas menos funcionalidades adicionales, permitiendo solo la visualización de documentos y archivos, la edición de ciertos tipos de archivos desde el navegador y la ejecución de comandos, en caso de necesitar realizar tareas administrativas. Una característica diferenciadora de esta plataforma es que te permite compartir archivos y carpetas mediante enlaces seguros \footnote{Las funcionalidades de Filebrowser se pueden ver en \href{https://filebrowser.org/features}{Features | File Browser}}.
+	
+	El último servicio que analizaremos es WebDAV. WebDAV no es un servicio en sí mismo, sino que es un protocolo implementado sobre HTTP entendiendo las funcionalidades de este último permitiendo crear, cargar, descargar, editar, eliminar un archivo remoto. El principal objetivo de este protocolo es poder manipular archivos a través de la red sin necesidad de utilizar otras tecnologías adicionales como FTP o NFS.
+	
+	WebDAV puede ser configurado en cualquier servidor web, ofreciendo una interfaz extremadamente sencilla. Sus funcionalidades son básicas permitiendo solo un único usuario, el cual no tiene limitaciones en cuanto al almacenamiento que puede utilizar.
+	
+	\subsection{Rendimiento}
+	Para medir el rendimiento de todos estos servicios NAS, se han utilizado las siguientes herramientas:
+	
+	\textbf{iftop:} Permite monitorear en tiempo real el tráfico de red en una interfaz, nos brinda detalles sobre las conexiones activas, el ancho de banda consumido, y las direcciones IP involucradas.
+	
+	\textbf{TCPdump:} Permite capturar paquetes de datos que viajan por la red, proporcionando una vista detallada del tráfico que pasa por la interfaz. La salida se puede guardar en archivos .pcap, el cual puede ser leído y analizado con Wireshark.
+	
+	\textbf{Wireshark:} Permite realizar análisis del tráfico existente sobre la red, permitiendo realizar filtrados y gráficos que facilitan el procesamiento de la información.
+	
+	Cada una de estas herramientas fue utilizada con una configuración específica. iftop fue configurada de la siguiente manera:
+	
+	\begin{verbatim}
+		sudo iftop -n -i enp1s0 -f 'host 192.168.0.124 and port 8080' -t > /home/nas/iftop_log.txt
+	\end{verbatim}
+	
+	Esto no permite monitorear el tráfico hacia y desde los sistemas NAS en la IP 192.168.0.124 (cliente) y el puerto 8080 (8081 para Filebrowser). Todos los datos escaneados son guardados en un archivo de texto plano. Esta herramienta nos proporciona información sobre la cantidad de datos transferidos y el ancho de banda utilizado por conexión.
+	
+	Por otro lado, TCPdump fue configurado de esta manera:
+	
+	\begin{verbatim}
+		sudo tcpdump -tttt -i enp1s0 'host 192.168.0.124 and port 8080' -w tcpdump_log.pcap
+	\end{verbatim}
+	
+	Esta herramienta nos permite capturar todo el tráfico que pasa por la interfaz, en específico la comunicación con la IP 192.168.0.124 y el puerto 8080 (8081 para Filebrowser). Además, se añadió un parámetro adicional (-tttt) que asigna una marca de tiempo detallada a cada paquete capturado, lo que nos permite analizar el tiempo de respuesta y la latencia en las transferencias de archivos.
+	
+	El experimento utilizado para medir el rendimiento de ambos sistemas NAS consta de la carga de 2000 archivos de 1KB. Esta cantidad de archivos, en conjunto con el tamaño de estos mismos, fueron seleccionados para simular un entorno de alta concurrencia y carga, permitiéndonos observar cómo se comporta cada sistema ante un entorno de alto tráfico y estrés.
 	
 	\section{Resultados Obtenidos}
-	Inicio resultados obtenidos
+	Se presenta una tabla comparativa de servicios NAS desplegados en este trabajo. Resume los aspectos de cada plataforma, los resultados de esta evaluación permiten una mejor comprensión de las ventajas y desventajas de cada sistema NAS, ayudando a identificar cual es la opción más adecuada según el entorno y las necesidades de los usuarios.
+	\begin{table}[htbp]
+		\centering
+		\caption{Comparativa de Servicios NAS}
+		\begin{tabularx}{\textwidth}{|X|X|X|X|}
+			\hline
+			\textbf{Aspecto} & \textbf{NextCloud} & \textbf{FileBrowser} & \textbf{WebDAV} \\
+			\hline
+			Instalación & Requiere configurar base de datos adicionales (MariaDB o MySQL, Redis). Utiliza Docker Compose. & Instalación directa con Docker, sin necesidad de configurar una base de datos adicional. & Instalación sencilla con Docker Compose, requiere la configuración de un servidor web como Nginx o similares, además de utilizar variables de entorno. \\
+			\hline
+			Recursos necesarios & Mayor uso de recursos debido al uso de bases de datos y su mayor cantidad de funcionalidades. & Consume menos recursos al no depender de bases de datos complejas. & Ligero en recursos, funcionalidades limitadas a las definidas en el protocolo WebDAV. \\
+			\hline
+			Costos Asociados & Proyecto de código abierto, pero si se escala podría requerir almacenamiento externo o hosting. & Proyecto de código abierto, sin costos asociados directos. & Proyecto de código abierto, costos mínimos relacionados con el servidor o hosting. \\
+			\hline
+			Funcionalidades & Gestión de usuarios, integración con almacenamiento externo (Google Drive, OneDrive), calendarios, edición colaborativa, etc. & Gestión de archivos, creación de usuarios, permisos, políticas de acceso, interfaz de usuario sencilla. & Carga y descarga de archivos a través de HTTP, sin funcionalidades adicionales. \\
+			\hline
+			Soporte para Usuarios & Soporta múltiples usuarios con cuotas de almacenamiento personalizadas y grupos de usuario. & Escalable dentro de los límites del almacenamiento local o servidor. & Maneja un solo usuario principal o autenticación básica mediante Nginx o Apache. \\
+			\hline
+			Escalabilidad & Puede escalar fácilmente mediante la integración de almacenamiento externo o ampliación del servidor. & Escalable dentro de los límites del almacenamiento local o del servidor. & Limitado a la funcionalidad de WebDAV sin opciones avanzadas de escalabilidad. \\
+			\hline
+			Seguridad & Soporte para cifrado, autenticación de usuarios y gestión de permisos granulares. & Permite gestión de permisos, pero con menos opciones de seguridad avanzada. & Utiliza autenticación básica mediante Nginx o Apache, pero no ofrece opciones avanzadas de seguridad. \\
+			\hline
+			Rendimiento & Adecuado para redes locales y externas, pero puede ser pesado en entornos con pocos recursos debido a su carga de servicios adicionales. & Ligero y rápido en entornos de baja o media de carga de usuarios. & Adecuado para su propósito, pero no soporta grandes cantidades de tráfico o usuarios simultáneos. \\
+			\hline
+		\end{tabularx}
+	\end{table}
+	
+	NextCloud ofrece un conjunto completo de características avanzadas, siendo ideal para entornos empresariales o usuarios que requieren una gestión de archivos extensible, pero su complejidad tanto en su instalación como mantenimiento, sumado a su mayor demanda de recursos podría no ser la opción más adecuada para entornos con recursos limitados o usuarios que solo requieran funcionalidades básicas.
+	
+	FileBrowser brinda un sistema ligero y fácil de instalar, resulta adecuado para aquellos usuarios que necesiten una gestión de archivos eficiente y simple. Es ideal para pequeñas implementaciones o entorno hogareño, donde la simplicidad y el bajo consumo de recursos son relevantes.
+	
+	WebDAV brinda un funcionamiento enfocado en la transferencia de archivos a través de HTTP. Su despliegue es simple, su limitada escalabilidad y funcionalidades lo hacen menos adecuado para ámbitos donde se requieren características más avanzadas, pero perfecto para usos específicos en los que solo se busca realizar cargas y descargas de datos.
+	
+	En el cuadro 2 se muestra las velocidades alcanzadas por cada uno de los servicios que fueron sometidas a las pruebas de rendimientos mencionadas en la sección anterior.
+	
+	\begin{table}[H]
+		\centering
+		\caption{Velocidades de Subida de Servicios NAS}
+		\begin{tabular}{|l|c|}
+			\hline
+			\textbf{Servicio} & \textbf{Velocidad de Subida} \\
+			\hline
+			Filebrowser & 206,43 Kb \\
+			\hline
+			NextCloud & 178,75 Kb \\
+			\hline
+			WebDAV & 665,19 Kb \\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	Como se puede apreciar WebDAV es el más veloz de los tres con un promedio de velocidad de subida cercano al megabit, por otro lado, tanto Filebrowser como NextCloud poseen una velocidad de subida similar. Al analizar el intercambio de mensajes entre cliente y servidor para cada servicio, podemos encontrar que NextCloud tiene un mayor número de paquetes y segmentos perdidos o corruptos, como así también un mayor problema para la sincronización entre terminales.
 	
 	\section{Conclusiones}
-	Inicio conclusiones.
+	Al momento de la elección entre estas plataformas dependerá de las necesidades específicas de cada usuario y/o entorno en el que se los utiliza. Para usuarios que priorizan la funcionalidad y escalabilidad, NextCloud sería la opción recomendada debido a la cantidad de funcionalidades y libertades a la hora de configurar el entorno. Si lo que se busca es simplicidad y eficiencia en la gestión de archivos, Filebrowser sería la opción más apropiada. WebDAV, por su parte, destaca en entornos que requieren una solución minimalista y eficiente para compartir archivos sin complicaciones adicionales, puede ser una opción adecuada para proyectos que requieran manipular archivos y directorios de forma remota.
 	
-	\nocite{*}
+	En términos de rendimiento, las pruebas realizadas indican que WebDAV es el más rápido de los tres servicios, lo que puede ser un factor decisivo en entornos donde la velocidad de transferencia es crítica. FileBrowser también mostró un rendimiento sólido, siendo más rápido que Nextcloud. NextCloud mostró un rendimiento inferior, con problemas de sincronización y pérdida de paquetes, afectando su eficiencia general, sin embargo, es posible implementar varias optimizaciones para mejorar el rendimiento de NextCloud (optimizar de la BD, optimizar servidor web Nginx o Apache, desactivación de funcionalidades, etc.).
+	
+	Podemos concluir que para la implementación de uno de estos servicios debe considerar no sólo las características técnicas y el rendimiento, sino también el contexto de uso y las expectativas a largo plazo. Dependiendo de la evolución de las necesidades de almacenamiento y gestión de datos, es crucial que las organizaciones y los usuarios particulares evalúen detalladamente sus opciones para seleccionar la solución que mejor se adapte a sus requerimientos actuales y futuros.
+	
+	\nocite{*}	
 	\section{Referencias}
 	\printbibliography[heading=none]
 \end{document}
