@@ -66,7 +66,6 @@ pdfborderstyle={/S/U/W 1}]{hyperref}
 	{\small Borgo, Martín Alejandro; Molina, Leandro Rodrigo; Laner Sandoval, Anacleto José Federico.\par}
 	{\normalsize Universidad Nacional de Entre Ríos\par}
 	{\normalsize Facultad de Ciencias de la Administración\par}
-	{\normalsize Licenciatura en Sistemas\par}
 	{\small
 		\href{mailto:martinborgo8@gmail.com}{martinborgo8@gmail.com},
 		\href{mailto:LeandroRodrigoMolina@gmail.com}{LeandroRodrigoMolina@gmail.com}
@@ -79,7 +78,7 @@ pdfborderstyle={/S/U/W 1}]{hyperref}
 	\justifying
 	
 	\section{Introducción}
-	Este trabajo se llevó a cabo en el marco de la cátedra de Comunicaciones y Redes, con el objetivo principal de aplicar los conocimientos aprendidos durante el dictado de la asignatura, de modo tal que los estudiantes puedan establecer una conexión entre los contenidos teóricos de la asignatura y la práctica.
+	Este trabajo se llevó a cabo en el marco de la asignatura de Comunicaciones y Redes, con el objetivo principal de aplicar los conocimientos aprendidos durante el dictado de la asignatura, de modo tal que los estudiantes puedan establecer una conexión entre los contenidos teóricos de la asignatura y la práctica.
 	
 	La incorporación de tecnologías IT en el ambiente empresarial introdujo diversos desafíos. Uno de estos desafíos fue la referida al almacenamiento, entre los 80’ y 90’ la capacidad de almacenamiento de los dispositivos era reducida en comparación a las necesidades empresariales, sumado al hecho de que el precio de este tipo de hardware era relativamente elevado en esos momentos, por lo que realizar inversiones en almacenamiento resultaba una tarea crítica a la hora de la toma de decisiones.
 	
@@ -202,7 +201,7 @@ pdfborderstyle={/S/U/W 1}]{hyperref}
 
 	Más allá de los mecanismos de gestión y asignación de recursos, NextCloud es reconocido por su extensibilidad y versatilidad. La plataforma permite agregar funcionalidades adicionales como calendarios, gestión de correos electrónicos, gestión y asignación de tareas e incluso edición colaborativa de documentos en la nube \footnote{Las funcionalidades de NextCloud pueden ser leídas con más claridad en su pagina oficial, \href{https://nextcloud.com/es/athome/}{Self-hosted cloud collaboration platform for home users - Nextcloud}}.
 	
-	Por otro lado, Filebrowser permite la creación de usuarios y grupos con cuotas de almacenamiento personalizadas, además de poder establecer políticas de acceso comunes o mucho más restrictivas a los demás usuarios y grupos del sistema.
+	Por otro lado, FileBrowser permite la creación de usuarios y grupos con cuotas de almacenamiento personalizadas, además de poder establecer políticas de acceso comunes o mucho más restrictivas a los demás usuarios y grupos del sistema.
 
 	Esta plataforma cuenta con muchas menos funcionalidades adicionales, permitiendo solo la visualización de documentos y archivos, la edición de ciertos tipos de archivos desde el navegador y la ejecución de comandos. Una característica diferenciadora de esta plataforma es que permite compartir archivos y carpetas mediante enlaces seguros \footnote{Las funcionalidades de Filebrowser se pueden ver en \href{https://filebrowser.org/features}{Features | File Browser}}.
 	
@@ -244,29 +243,29 @@ pdfborderstyle={/S/U/W 1}]{hyperref}
 	
 	\begin{table}[htbp]
 		\centering
-		\caption{Comparativa de Servicios NAS}
+		\caption{\textit{Comparativa de Servicios NAS}}
 		\label{tabla:comparativa_servicios}
-		\small
-		\begin{tabularx}{\textwidth}{|X|X|X|X|}
-			\hline
+		\footnotesize % Cambia el tamaño de la fuente a un tamaño más pequeño
+		\begin{tabularx}{\textwidth}{>{\hsize=0.8\hsize}X >{\hsize=1.1\hsize}X >{\hsize=1.1\hsize}X >{\hsize=1.1\hsize}X}
+			\toprule
 			\textbf{Aspecto} & \textbf{NextCloud} & \textbf{FileBrowser} & \textbf{WebDAV} \\
-			\hline
+			\midrule
 			Instalación & Requiere configurar base de datos adicionales (MariaDB o MySQL, Redis). Utiliza Docker Compose. & Instalación directa con Docker, sin necesidad de configurar una base de datos adicional. & Instalación sencilla con Docker Compose, requiere la configuración de un servidor web como Nginx o similares, además de utilizar variables de entorno. \\
-			\hline
+			\midrule
 			Recursos necesarios & Mayor uso de recursos debido al uso de bases de datos y su mayor cantidad de funcionalidades. & Consume menos recursos al no depender de bases de datos complejas. & Ligero en recursos, funcionalidades limitadas a las definidas en el protocolo WebDAV. \\
-			\hline
+			\midrule
 			Costos Asociados & Proyecto de código abierto, pero si se escala podría requerir almacenamiento externo o hosting. & Proyecto de código abierto, sin costos asociados directos. & Proyecto de código abierto, costos mínimos relacionados con el servidor o hosting. \\
-			\hline
+			\midrule
 			Funcionalidades & Gestión de usuarios, integración con almacenamiento externo (Google Drive, OneDrive), calendarios, edición colaborativa, etc. & Gestión de archivos, creación de usuarios, permisos, políticas de acceso, interfaz de usuario sencilla. & Carga y descarga de archivos a través de HTTP, sin funcionalidades adicionales. \\
-			\hline
+			\midrule
 			Soporte para Usuarios & Soporta múltiples usuarios con cuotas de almacenamiento personalizadas y grupos de usuario. & Escalable dentro de los límites del almacenamiento local o servidor. & Maneja un solo usuario principal o autenticación básica mediante Nginx o Apache. \\
-			\hline
+			\midrule
 			Escalabilidad & Puede escalar fácilmente mediante la integración de almacenamiento externo o ampliación del servidor. & Escalable dentro de los límites del almacenamiento local o del servidor. & Limitado a la funcionalidad de WebDAV sin opciones avanzadas de escalabilidad. \\
-			\hline
+			\midrule
 			Seguridad & Soporte para cifrado, autenticación de usuarios y gestión de permisos granulares. & Permite gestión de permisos, pero con menos opciones de seguridad avanzada. & Utiliza autenticación básica mediante Nginx o Apache, pero no ofrece opciones avanzadas de seguridad. \\
-			\hline
+			\midrule
 			Rendimiento & Adecuado para redes locales y externas, pero puede ser pesado en entornos con pocos recursos debido a su carga de servicios adicionales. & Ligero y rápido en entornos de baja o media de carga de usuarios. & Adecuado para su propósito, pero no soporta grandes cantidades de tráfico o usuarios simultáneos. \\
-			\hline
+			\bottomrule
 		\end{tabularx}
 	\end{table}
 	
@@ -280,21 +279,20 @@ pdfborderstyle={/S/U/W 1}]{hyperref}
 
 	\begin{table}[H]
 		\centering
-		\caption{Velocidades de Subida de Servicios NAS}
+		\caption{\textit{Velocidades de Subida de Servicios NAS}}
 		\label{tabla:velocidades_subida}
-		\begin{tabular}{|l|c|c|}
-			\hline
+		\small % Cambia el tamaño de la fuente
+		\begin{tabular}{lcc}
+			\toprule
 			\textbf{Servicio} & \textbf{Velocidad de Subida} & \textbf{Tiempo Medio de Subida de los Archivos} \\
-			\hline
+			\midrule
 			Filebrowser & 206,43 Kb & 3.03 min \\
-			\hline
 			NextCloud & 178,75 Kb & 35.01 min \\
-			\hline
 			WebDAV & 665,19 Kb & 1.15 min \\
-			\hline
+			\bottomrule
 		\end{tabular}
 	\end{table}
-	
+
 	Como se puede apreciar WebDAV es el más veloz de los tres con un promedio de velocidad de subida cercano al megabit, por otro lado, tanto Filebrowser como NextCloud poseen una velocidad de subida similar. Al analizar el intercambio de mensajes entre cliente y servidor para cada servicio, podemos encontrar que NextCloud tiene un mayor número de paquetes y segmentos perdidos o corruptos, como así también un mayor problema para la sincronización entre terminales.
 	
 	\section{Conclusiones}
@@ -307,4 +305,8 @@ pdfborderstyle={/S/U/W 1}]{hyperref}
 	\nocite{*}	
 	\section{Referencias}
 	\printbibliography[heading=none]
+		\thispagestyle{empty} % No mostrar encabezado ni pie de página en esta página
+	\begin{tikzpicture}[remember picture,overlay]
+		\node[anchor=south east,opacity=0.09] at (current page.south east) {\includegraphics[width=3cm]{Amarys_Doro.png}};
+	\end{tikzpicture}
 \end{document}
